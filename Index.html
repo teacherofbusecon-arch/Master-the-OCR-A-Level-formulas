@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master the Formulas — OCR A Level Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a1f3a;
+    --deep: #0d1024;
+    --gold: #f0b429;
+    --gold-light: #ffd166;
+    --teal: #06d6a0;
+    --coral: #ff6b6b;
+    --lavender: #a8b4ff;
+    --white: #f8f9ff;
+    --card: #1e2444;
+    --card2: #252b50;
+    --border: rgba(255,255,255,0.08);
+    --text: #c8cfe8;
+    --muted: #6b75a8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--deep);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--navy);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--gold); }
+  .score-badge {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* NAV TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--navy);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 14px 20px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* SECTIONS */
+  .section { display: none; padding: 2rem; max-width: 900px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* HOME */
+  .hero {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .hero h1 em { color: var(--gold); font-style: normal; }
+  .hero p { font-size: 1.05rem; color: var(--muted); max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.7; }
+
+  .mode-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .mode-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem 1.4rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .mode-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent, var(--gold));
+    transform: scaleX(0);
+    transition: transform 0.25s;
+    transform-origin: left;
+  }
+  .mode-card:hover { background: var(--card2); transform: translateY(-2px); }
+  .mode-card:hover::before { transform: scaleX(1); }
+  .mode-card .icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .mode-card h3 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
+  .mode-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+  .mode-card[data-tab="learn"] { --accent: var(--lavender); }
+  .mode-card[data-tab="practice"] { --accent: var(--gold); }
+  .mode-card[data-tab="solve"] { --accent: var(--teal); }
+  .mode-card[data-tab="challenge"] { --accent: var(--coral); }
+
+  /* LEARN */
+  .search-bar {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-bar:focus { border-color: var(--gold); }
+  .search-bar::placeholder { color: var(--muted); }
+
+  .category-filter {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;
+  }
+  .filter-btn {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--gold);
+    color: var(--deep);
+    border-color: var(--gold);
+    font-weight: 600;
+  }
+
+  .formula-grid {
+    display: grid; gap: 0.75rem;
+  }
+  .formula-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.4rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .formula-card:hover { border-color: rgba(240,180,41,0.3); background: var(--card2); }
+  .formula-card .name {
+    font-weight: 600;
+    color: var(--white);
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .formula-card .cat-tag {
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 500;
+  }
+  .formula-card .formula-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--gold);
+    background: rgba(240,180,41,0.07);
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-top: 0.6rem;
+  }
+  .formula-card .tip {
+    display: none;
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.6;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--border);
+  }
+  .formula-card.expanded .tip { display: block; }
+  .formula-card .expand-icon { transition: transform 0.2s; color: var(--muted); }
+  .formula-card.expanded .expand-icon { transform: rotate(180deg); }
+
+  /* PRACTICE */
+  .quiz-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+  }
+  .quiz-progress {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+  }
+  .progress-bar {
+    flex: 1; height: 6px; background: var(--card2); border-radius: 999px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--gold); border-radius: 999px; transition: width 0.4s ease;
+  }
+  .progress-text { font-size: 0.8rem; color: var(--muted); white-space: nowrap; font-family: 'DM Mono', monospace; }
+
+  .quiz-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+    background: rgba(240,180,41,0.15);
+    color: var(--gold);
+  }
+  .quiz-question {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--white);
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+  .quiz-hint { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.5rem; }
+
+  .quiz-options {
+    display: grid; gap: 0.6rem; margin-bottom: 1.5rem;
+  }
+  .option-btn {
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    transition: all 0.2s;
+    font-family: 'DM Mono', monospace;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--white); }
+  .option-btn.correct { background: rgba(6,214,160,0.12); border-color: var(--teal); color: var(--teal); }
+  .option-btn.wrong { background: rgba(255,107,107,0.12); border-color: var(--coral); color: var(--coral); }
+  .option-btn:disabled { cursor: default; }
+
+  .feedback-box {
+    display: none;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct { background: rgba(6,214,160,0.08); border: 1px solid rgba(6,214,160,0.3); color: var(--teal); }
+  .feedback-box.wrong { background: rgba(255,107,107,0.08); border: 1px solid rgba(255,107,107,0.3); color: var(--coral); }
+  .feedback-box strong { display: block; margin-bottom: 0.3rem; font-size: 0.95rem; }
+
+  .next-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--gold);
+    color: var(--deep);
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity 0.2s;
+    display: none;
+  }
+  .next-btn.show { display: block; }
+  .next-btn:hover { opacity: 0.9; }
+
+  /* SOLVE */
+  .solve-container {
+    display: grid; gap: 1.2rem;
+  }
+  .solve-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.6rem;
+  }
+  .solve-card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+  .solve-scenario {
+    font-size: 0.88rem;
+    color: var(--text);
+    background: var(--card2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 0.8rem 0;
+    line-height: 1.6;
+  }
+  .solve-scenario strong { color: var(--gold); }
+  .solve-input-row {
+    display: flex; gap: 0.6rem; align-items: center;
+  }
+  .solve-input {
+    flex: 1;
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .solve-input:focus { border-color: var(--teal); }
+  .check-btn {
+    padding: 10px 18px;
+    background: var(--teal);
+    color: var(--deep);
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .check-btn:hover { opacity: 0.85; }
+  .solve-result {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: none;
+    line-height: 1.5;
+  }
+  .solve-result.show { display: block; }
+  .solve-result.correct { background: rgba(6,214,160,0.1); border: 1px solid rgba(6,214,160,0.25); color: var(--teal); }
+  .solve-result.wrong { background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.25); color: var(--coral); }
+
+  /* CHALLENGE */
+  .challenge-intro {
+    background: linear-gradient(135deg, rgba(255,107,107,0.1), rgba(255,107,107,0.03));
+    border: 1px solid rgba(255,107,107,0.25);
+    border-radius: 16px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.5rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .challenge-intro .icon { font-size: 1.6rem; flex-shrink: 0; }
+  .challenge-intro h3 { font-size: 1rem; color: var(--coral); font-weight: 700; margin-bottom: 0.3rem; }
+  .challenge-intro p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+  .challenge-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  .challenge-card .challenge-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(255,107,107,0.12);
+    color: var(--coral);
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .challenge-q {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    line-height: 1.5;
+    margin-bottom: 0.6rem;
+  }
+  .challenge-given {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--lavender);
+    background: rgba(168,180,255,0.07);
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+  .challenge-input-row { display: flex; gap: 0.6rem; }
+  .challenge-input {
+    flex: 1;
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .challenge-input:focus { border-color: var(--coral); }
+  .challenge-check {
+    padding: 10px 18px;
+    background: var(--coral);
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .challenge-check:hover { opacity: 0.85; }
+  .challenge-result {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    border-radius: 8px;
+    display: none;
+    line-height: 1.6;
+  }
+  .challenge-result.show { display: block; }
+  .challenge-result.correct { background: rgba(6,214,160,0.1); border: 1px solid rgba(6,214,160,0.25); color: var(--teal); }
+  .challenge-result.wrong { background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.25); color: var(--coral); }
+
+  /* SCORE RESULTS */
+  .results-screen {
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+  .results-screen .big-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .results-screen h2 { font-size: 1.4rem; color: var(--white); margin: 0.5rem 0 0.5rem; }
+  .results-screen p { color: var(--muted); margin-bottom: 2rem; }
+  .restart-btn {
+    padding: 14px 32px;
+    background: var(--gold);
+    color: var(--deep);
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+  .section-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.5; }
+
+  /* CAT TAG COLORS */
+  .cat-finance { background: rgba(240,180,41,0.12); color: var(--gold); }
+  .cat-marketing { background: rgba(168,180,255,0.12); color: var(--lavender); }
+  .cat-operations { background: rgba(6,214,160,0.12); color: var(--teal); }
+  .cat-hr { background: rgba(255,107,107,0.12); color: var(--coral); }
+
+  @media (max-width: 600px) {
+    .section { padding: 1.2rem; }
+    .quiz-question { font-size: 1.1rem; }
+  }
+
+  /* animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section.active { animation: fadeUp 0.3s ease; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Master the <span>Formulas</span></div>
+  <div class="score-badge" id="scoreBadge">⭐ Score: 0</div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="home">Home</button>
+  <button class="tab-btn" data-tab="learn">📚 Learn</button>
+  <button class="tab-btn" data-tab="practice">🎯 Practice Quiz</button>
+  <button class="tab-btn" data-tab="solve">🔢 Solve Problems</button>
+  <button class="tab-btn" data-tab="challenge">🔥 Challenge Mode</button>
+</div>
+
+<!-- HOME -->
+<div class="section active" id="section-home">
+  <div class="hero">
+    <h1>Ace Your A Level<br><em>Business Formulas</em></h1>
+    <p>The complete revision toolkit for OCR H436. Learn every formula, solve real problems, and test your mastery with reverse-engineering challenges.</p>
+  </div>
+  <div class="mode-grid">
+    <div class="mode-card" data-tab="learn">
+      <div class="icon">📚</div>
+      <h3>Learn the Formulas</h3>
+      <p>Browse all OCR formulas with definitions, tips, and memory aids.</p>
+    </div>
+    <div class="mode-card" data-tab="practice">
+      <div class="icon">🎯</div>
+      <h3>Practice Quiz</h3>
+      <p>Multiple choice questions — identify the right formula every time.</p>
+    </div>
+    <div class="mode-card" data-tab="solve">
+      <div class="icon">🔢</div>
+      <h3>Solve Problems</h3>
+      <p>Work through real business scenarios and calculate actual answers.</p>
+    </div>
+    <div class="mode-card" data-tab="challenge">
+      <div class="icon">🔥</div>
+      <h3>Challenge Mode</h3>
+      <p>Reverse-engineer formulas. Given an answer — find the missing input.</p>
+    </div>
+  </div>
+</div>
+
+<!-- LEARN -->
+<div class="section" id="section-learn">
+  <div class="section-title">Formula Reference</div>
+  <div class="section-sub">Click any formula to reveal tips and memory aids. Use the filter to focus on specific topics.</div>
+  <input class="search-bar" type="text" placeholder="Search formulas..." id="formulaSearch">
+  <div class="category-filter">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="finance">Finance</button>
+    <button class="filter-btn" data-filter="marketing">Marketing</button>
+    <button class="filter-btn" data-filter="operations">Operations</button>
+    <button class="filter-btn" data-filter="hr">HR / People</button>
+  </div>
+  <div class="formula-grid" id="formulaGrid"></div>
+</div>
+
+<!-- PRACTICE -->
+<div class="section" id="section-practice">
+  <div class="section-title">Practice Quiz</div>
+  <div class="section-sub">Choose the correct formula or interpretation for each question. You earn a point for every correct answer.</div>
+  <div class="quiz-container" id="quizContainer"></div>
+</div>
+
+<!-- SOLVE -->
+<div class="section" id="section-solve">
+  <div class="section-title">Solve Problems</div>
+  <div class="section-sub">Apply formulas to real business scenarios. Enter your calculated answer (numbers only, round to 2dp where needed).</div>
+  <div class="solve-container" id="solveContainer"></div>
+</div>
+
+<!-- CHALLENGE -->
+<div class="section" id="section-challenge">
+  <div class="section-title">🔥 Challenge Mode</div>
+  <div class="section-sub">True mastery means working backwards. Given the result and some values, find the missing piece.</div>
+  <div class="challenge-intro">
+    <div class="icon">🧠</div>
+    <div>
+      <h3>Reverse Engineering</h3>
+      <p>In the real exam, you may be asked to find a missing input variable. These challenges train exactly that skill.</p>
+    </div>
+  </div>
+  <div id="challengeContainer"></div>
+</div>
+
+<script>
+// ========== DATA ==========
+const formulas = [
+  { name: "Absenteeism (%)", cat: "hr", formula: "(Days absent ÷ Total working days) × 100", tip: "Think of it as: what percentage of scheduled working days were missed? Always multiply by 100 to get a percentage. Common trap: forgetting to multiply by 100." },
+  { name: "Acid Test Ratio", cat: "finance", formula: "(Current assets − Inventory) ÷ Current liabilities", tip: "The acid test is stricter than the current ratio — it strips out inventory because it can't be quickly converted to cash. A ratio above 1:1 is generally healthy." },
+  { name: "Added Value", cat: "finance", formula: "Sales revenue − Cost of inputs  OR  Price − Cost per unit", tip: "Added value is what the business adds beyond the raw input costs. It pays for wages, overheads, and profit. Higher added value = more competitive advantage." },
+  { name: "Break-Even Quantity", cat: "finance", formula: "Fixed costs ÷ Contribution per unit", tip: "First calculate contribution per unit (price − variable cost per unit). Then divide fixed costs by that. BEQ tells you how many units to sell before making any profit." },
+  { name: "Capacity Utilisation (%)", cat: "operations", formula: "(Actual output ÷ Maximum possible output) × 100", tip: "100% utilisation isn't always ideal — no room for maintenance or unexpected demand spikes. 80–85% is often considered optimal in manufacturing." },
+  { name: "Capital Employed", cat: "finance", formula: "Total equity + Non-current liabilities", tip: "Capital employed represents the long-term funds invested in the business. Used in ROCE. Remember: it's equity PLUS non-current liabilities (not current)." },
+  { name: "Contribution", cat: "finance", formula: "Revenue − Total variable costs  OR  Price − Variable cost per unit", tip: "Contribution isn't profit — it's what's left after variable costs to cover fixed costs and eventually profit. Used in break-even and marginal costing." },
+  { name: "Current Ratio", cat: "finance", formula: "Current assets ÷ Current liabilities", tip: "Measures short-term liquidity. A ratio of 1.5–2:1 is typically healthy. Too high may mean inefficient use of assets; too low signals cash flow risk." },
+  { name: "Defect/Wastage Rate (%)", cat: "operations", formula: "(Defective/Wasted output ÷ Total output) × 100", tip: "Key for quality management. High defect rates increase costs and damage brand reputation. Lean businesses aim to drive this as close to 0% as possible." },
+  { name: "Employee Productivity", cat: "hr", formula: "Output per period ÷ Number of employees", tip: "Higher productivity = more output per employee. Can be improved through training, motivation, better equipment, or process improvement. Compare over time." },
+  { name: "Employee Turnover (%)", cat: "hr", formula: "(Employees leaving ÷ Average number of employees) × 100", tip: "High turnover is costly — recruitment, training, lost knowledge. Some turnover is healthy (fresh ideas). Always use the *average* number of employees in denominator." },
+  { name: "Gearing Ratio (%)", cat: "finance", formula: "(Non-current liabilities ÷ Capital employed) × 100", tip: "Gearing measures how reliant a business is on debt. Over 50% is considered high-geared (risky). Under 25% is low-geared (safer but may signal missed growth opportunities)." },
+  { name: "Gross Profit", cat: "finance", formula: "Revenue − Cost of sales", tip: "Gross profit only deducts direct costs (COGS). It does NOT include overheads/expenses. Don't confuse with operating profit or net profit." },
+  { name: "Gross Profit Margin (%)", cat: "finance", formula: "(Gross profit ÷ Revenue) × 100", tip: "Expressed as a percentage of revenue. A higher margin means more efficient production relative to selling price. Compare to industry averages for context." },
+  { name: "Income Elasticity of Demand (YED)", cat: "marketing", formula: "% change in quantity demanded ÷ % change in income", tip: "Positive YED = normal good (demand rises with income). Negative YED = inferior good. YED > 1 = luxury good. Essential for forecasting demand during economic changes." },
+  { name: "Inventory Turnover", cat: "operations", formula: "Cost of sales ÷ Average inventory", tip: "Higher turnover = inventory selling faster = more efficient. Use cost of sales (not revenue) on top. Low turnover can mean overstock or poor sales." },
+  { name: "Margin of Safety", cat: "finance", formula: "Sales volume − Break-even quantity", tip: "The larger the margin of safety, the more cushion a business has before making a loss. Can also be expressed as a percentage of sales volume for comparison." },
+  { name: "Market Capitalisation", cat: "marketing", formula: "Current market share price × Total shares issued", tip: "Reflects what the stock market thinks the company is worth. Can change dramatically with investor sentiment. Used to rank company sizes (FTSE 100 etc.)." },
+  { name: "Market Growth (%)", cat: "marketing", formula: "(Change in market size ÷ Original market size) × 100", tip: "Change = new size minus original size. Can be positive or negative. Growing markets attract new entrants. Crucial for assessing market attractiveness." },
+  { name: "Market Share (%) by Value", cat: "marketing", formula: "(Revenue ÷ Total market revenue) × 100", tip: "Higher value share shows stronger pricing power. Compare with volume share — if value share > volume share, you're pricing above average." },
+  { name: "Market Share (%) by Volume", cat: "marketing", formula: "(Sales volume ÷ Total market volume) × 100", tip: "Volume share is about units sold. A supermarket own-brand may have high volume share but low value share if they price cheaply." },
+  { name: "Net Cash Flow", cat: "finance", formula: "Cash inflow − Cash outflow (per period)", tip: "Simple but vital. Negative net cash flow doesn't always mean loss — a business could be investing heavily. Always check context and cumulative cash flow." },
+  { name: "Operating Profit", cat: "finance", formula: "Gross profit − Expenses", tip: "Expenses here means overheads/operating expenses (wages, rent, utilities). Operating profit is also called EBIT. It excludes finance costs and tax." },
+  { name: "Operating Profit Margin (%)", cat: "finance", formula: "(Operating profit ÷ Revenue) × 100", tip: "Shows how much profit from operations per £ of revenue. Better measure of operational efficiency than gross margin as it includes overhead costs." },
+  { name: "Price Elasticity of Demand (PED)", cat: "marketing", formula: "% change in quantity demanded ÷ % change in price", tip: "PED is almost always negative (inverse relationship). If |PED| > 1 = elastic (sensitive to price). |PED| < 1 = inelastic. Crucial for pricing decisions." },
+  { name: "Productivity", cat: "operations", formula: "Output per period ÷ Inputs in that period", tip: "Broader than labour productivity — inputs can include capital and materials. Productivity improvements are key to competitiveness and profitability." },
+  { name: "Profit/Loss", cat: "finance", formula: "Total revenue − Total costs", tip: "Total costs = fixed + variable. This is the simplest profit formula. Profit when positive, loss when negative." },
+  { name: "Profit for the Year (Net Profit)", cat: "finance", formula: "Operating profit − Finance costs − Tax", tip: "The 'bottom line.' Finance costs = interest on debt. Tax is applied to profit before tax. Net profit margin is calculated using this figure." },
+  { name: "Net Profit Margin (%)", cat: "finance", formula: "(Net profit ÷ Revenue) × 100", tip: "The ultimate profitability measure after ALL costs. Can be much lower than gross or operating margins due to interest and tax deductions." },
+  { name: "Re-order Level", cat: "operations", formula: "(Lead time × Average usage per period) + Buffer inventory", tip: "The stock level that triggers a new order. Lead time = time between ordering and receiving. Buffer stock is the safety net against stockouts." },
+  { name: "Re-order Quantity", cat: "operations", formula: "Maximum inventory − Buffer inventory", tip: "How much to order each time. The gap between your buffer (minimum) stock and maximum stock capacity. Links to economic order quantity in practice." },
+  { name: "ROCE (%)", cat: "finance", formula: "(Operating profit ÷ Capital employed) × 100", tip: "Return on Capital Employed — the key overall profitability ratio. Compare to cost of borrowing: if ROCE < interest rate, the business isn't generating enough return." },
+  { name: "Total Cost", cat: "finance", formula: "Fixed costs + Variable costs", tip: "Fixed costs don't change with output (rent, salaries). Variable costs rise with output (materials, direct labour). Total cost is their sum." },
+  { name: "Total Revenue", cat: "finance", formula: "Price × Quantity sold", tip: "Also called 'sales revenue' or 'turnover.' Increasing revenue requires either raising price or increasing volume — PED determines which is more effective." },
+  { name: "Total Variable Cost", cat: "finance", formula: "Variable cost per unit × Quantity", tip: "Variable costs scale directly with output. Important in break-even analysis and contribution calculations." },
+  { name: "Trade Payable Days", cat: "finance", formula: "(Trade payables ÷ Cost of sales) × 365", tip: "How long (in days) a business takes to pay its suppliers. Longer = more liquidity for the business but can strain supplier relationships." },
+  { name: "Trade Receivable Days", cat: "finance", formula: "(Trade receivables ÷ Revenue) × 365", tip: "How long customers take to pay. Lower is better for cash flow. High receivable days increases bad debt risk. Compare to credit terms offered." },
+  { name: "Unit Cost", cat: "finance", formula: "Total cost ÷ Output", tip: "Average cost per unit. Falls as output rises (economies of scale spreading fixed costs). Key to pricing strategy and competitiveness." },
+  { name: "Variance", cat: "finance", formula: "Budgeted amount − Actual amount", tip: "Positive variance = favourable (actual better than budget). Negative variance = adverse. Crucial for management accounting and budget control." },
+];
+
+const catColors = { finance: "cat-finance", marketing: "cat-marketing", operations: "cat-operations", hr: "cat-hr" };
+const catLabels = { finance: "Finance", marketing: "Marketing", operations: "Operations", hr: "HR" };
+
+// ========== LEARN ==========
+function renderFormulas(filter = "all", search = "") {
+  const grid = document.getElementById("formulaGrid");
+  const filtered = formulas.filter(f => {
+    const matchCat = filter === "all" || f.cat === filter;
+    const matchSearch = f.name.toLowerCase().includes(search.toLowerCase()) || f.formula.toLowerCase().includes(search.toLowerCase());
+    return matchCat && matchSearch;
+  });
+  grid.innerHTML = filtered.map((f, i) => `
+    <div class="formula-card" onclick="toggleFormula(this)">
+      <div class="name">
+        ${f.name}
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <span class="cat-tag ${catColors[f.cat]}">${catLabels[f.cat]}</span>
+          <span class="expand-icon">▾</span>
+        </div>
+      </div>
+      <div class="formula-text">${f.formula}</div>
+      <div class="tip">💡 <strong>Exam Tip:</strong> ${f.tip}</div>
+    </div>
+  `).join('');
+}
+
+function toggleFormula(el) {
+  el.classList.toggle('expanded');
+}
+
+document.getElementById("formulaSearch").addEventListener("input", e => {
+  const active = document.querySelector(".filter-btn.active");
+  renderFormulas(active ? active.dataset.filter : "all", e.target.value);
+});
+
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderFormulas(btn.dataset.filter, document.getElementById("formulaSearch").value);
+  });
+});
+
+renderFormulas();
+
+// ========== QUIZ ==========
+const quizQuestions = [
+  { q: "A business has fixed costs of £40,000 and a contribution per unit of £8. What is the formula for break-even?", options: ["Fixed costs ÷ Contribution per unit", "Fixed costs × Contribution per unit", "Variable costs ÷ Fixed costs", "Revenue ÷ Contribution"], answer: 0, feedback: "Break-even quantity = Fixed costs ÷ Contribution per unit. Here: £40,000 ÷ £8 = 5,000 units. The contribution per unit first needs to be calculated as Price − Variable cost per unit.", cat: "Finance" },
+  { q: "Which ratio measures a firm's ability to meet short-term debts, excluding inventory?", options: ["Current ratio", "Gearing ratio", "Acid test ratio", "ROCE"], answer: 2, feedback: "The acid test ratio = (Current assets − Inventory) ÷ Current liabilities. Inventory is removed because it can't be quickly converted to cash in an emergency.", cat: "Finance" },
+  { q: "A firm's operating profit is £120,000 and its capital employed is £600,000. Which formula gives ROCE?", options: ["Net profit ÷ Revenue × 100", "Operating profit ÷ Capital employed × 100", "Gross profit ÷ Total assets × 100", "Revenue ÷ Capital employed × 100"], answer: 1, feedback: "ROCE = (Operating profit ÷ Capital employed) × 100. Here: (£120,000 ÷ £600,000) × 100 = 20%. Capital employed = Total equity + Non-current liabilities.", cat: "Finance" },
+  { q: "What does a NEGATIVE Price Elasticity of Demand (PED) value indicate?", options: ["The good is inferior", "The usual inverse relationship between price and demand", "The firm is operating at a loss", "Demand is perfectly inelastic"], answer: 1, feedback: "PED is almost always negative because when price rises, demand falls (and vice versa). This is the normal inverse relationship. A negative PED doesn't mean anything is wrong — it's expected.", cat: "Marketing" },
+  { q: "Employee turnover is calculated as:", options: ["Employees hired ÷ Total employees × 100", "Employees leaving ÷ Average employees × 100", "Days absent ÷ Working days × 100", "Output ÷ Number of employees"], answer: 1, feedback: "Employee turnover (%) = (Number of employees leaving during a period ÷ Average number of employees) × 100. Don't confuse with absenteeism, which uses working days.", cat: "HR" },
+  { q: "A business sells 12,000 units and the break-even point is 8,000 units. What is the margin of safety?", options: ["12,000 units", "8,000 units", "4,000 units", "20,000 units"], answer: 2, feedback: "Margin of safety = Sales volume − Break-even quantity = 12,000 − 8,000 = 4,000 units. This shows how far sales can fall before the business makes a loss.", cat: "Finance" },
+  { q: "Which formula calculates gross profit?", options: ["Revenue − Total costs", "Revenue − Cost of sales", "Operating profit − Finance costs", "Revenue − Variable costs"], answer: 1, feedback: "Gross profit = Revenue − Cost of sales (direct costs only). Operating profit further deducts expenses/overheads. Net profit also deducts finance costs and tax.", cat: "Finance" },
+  { q: "Capacity utilisation of 75% means:", options: ["The firm is losing 25% of revenue", "The firm is using 75% of its maximum possible output", "25% of workers are absent", "Fixed costs are 75% of total costs"], answer: 1, feedback: "Capacity utilisation (%) = (Actual output ÷ Maximum possible output) × 100. At 75%, the firm has 25% spare capacity. This could mean inefficiency or deliberate flexibility.", cat: "Operations" },
+  { q: "Trade receivable days measures:", options: ["How quickly the business pays suppliers", "How long customers take to pay", "How many days of inventory are held", "The time to reach break-even"], answer: 1, feedback: "Trade receivable days = (Trade receivables ÷ Revenue) × 365. Lower is better for cash flow. High receivable days increases the risk of bad debts.", cat: "Finance" },
+  { q: "A positive variance in budgeting means:", options: ["Actual spending exceeded budget", "The budget was not met", "Actual result was better than budgeted", "Revenue was lower than expected"], answer: 2, feedback: "Variance = Budgeted amount − Actual amount. Positive (favourable) variance means actual performance was better than budget — e.g. lower actual costs or higher actual revenue than planned.", cat: "Finance" },
+];
+
+let currentQ = 0, score = 0, totalScore = 0, answered = false;
+
+function renderQuiz() {
+  const container = document.getElementById("quizContainer");
+  if (currentQ >= quizQuestions.length) {
+    const pct = Math.round((score / quizQuestions.length) * 100);
+    const msg = pct >= 80 ? "Excellent work! 🎉" : pct >= 60 ? "Good effort — keep practising!" : "Keep going — review the formulas and try again!";
+    container.innerHTML = `
+      <div class="results-screen">
+        <div class="big-score">${score}/${quizQuestions.length}</div>
+        <h2>${msg}</h2>
+        <p>You scored ${pct}% on this quiz round.</p>
+        <button class="restart-btn" onclick="restartQuiz()">Try Again ↺</button>
+      </div>`;
+    return;
+  }
+  const q = quizQuestions[currentQ];
+  const pct = (currentQ / quizQuestions.length) * 100;
+  container.innerHTML = `
+    <div class="quiz-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="progress-text">${currentQ + 1} / ${quizQuestions.length}</div>
+    </div>
+    <div class="quiz-category">${q.cat}</div>
+    <div class="quiz-question">${q.q}</div>
+    <div class="quiz-hint">Select the correct answer:</div>
+    <div class="quiz-options">
+      ${q.options.map((o, i) => `<button class="option-btn" onclick="selectAnswer(${i})">${o}</button>`).join('')}
+    </div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
+  `;
+  answered = false;
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = quizQuestions[currentQ];
+  const btns = document.querySelectorAll(".option-btn");
+  const fb = document.getElementById("feedbackBox");
+  btns.forEach(b => b.disabled = true);
+  btns[q.answer].classList.add("correct");
+  if (idx === q.answer) {
+    score++;
+    totalScore++;
+    document.getElementById("scoreBadge").textContent = `⭐ Score: ${totalScore}`;
+    fb.className = "feedback-box show correct";
+    fb.innerHTML = `<strong>✓ Correct!</strong>${q.feedback}`;
+  } else {
+    btns[idx].classList.add("wrong");
+    fb.className = "feedback-box show wrong";
+    fb.innerHTML = `<strong>✗ Not quite.</strong>${q.feedback}`;
+  }
+  document.getElementById("nextBtn").classList.add("show");
+}
+
+function nextQuestion() {
+  currentQ++;
+  renderQuiz();
+}
+
+function restartQuiz() {
+  currentQ = 0; score = 0;
+  // shuffle
+  quizQuestions.sort(() => Math.random() - 0.5);
+  renderQuiz();
+}
+
+renderQuiz();
+
+// ========== SOLVE ==========
+const solveProblems = [
+  { name: "Break-Even Quantity", scenario: "A bakery has <strong>fixed costs of £15,000</strong> per month. Each loaf sells for <strong>£3.50</strong> and has a variable cost of <strong>£1.00</strong>. How many loaves must it sell to break even?", answer: 6000, tolerance: 0, unit: "loaves", hint: "Contribution per unit = Price − Variable cost. BEQ = Fixed costs ÷ Contribution per unit.", workings: "Contribution = £3.50 − £1.00 = £2.50. BEQ = £15,000 ÷ £2.50 = 6,000 loaves." },
+  { name: "Gross Profit Margin (%)", scenario: "A retailer has <strong>revenue of £200,000</strong> and <strong>cost of sales of £120,000</strong>. Calculate the gross profit margin.", answer: 40, tolerance: 0.5, unit: "%", hint: "Gross profit = Revenue − Cost of sales. GPM (%) = (Gross profit ÷ Revenue) × 100.", workings: "Gross profit = £200,000 − £120,000 = £80,000. GPM = (£80,000 ÷ £200,000) × 100 = 40%." },
+  { name: "ROCE (%)", scenario: "A firm has <strong>operating profit of £90,000</strong>, <strong>total equity of £300,000</strong>, and <strong>non-current liabilities of £150,000</strong>. Calculate ROCE.", answer: 20, tolerance: 0.5, unit: "%", hint: "Capital employed = Total equity + Non-current liabilities. ROCE = (Operating profit ÷ Capital employed) × 100.", workings: "Capital employed = £300,000 + £150,000 = £450,000. ROCE = (£90,000 ÷ £450,000) × 100 = 20%." },
+  { name: "Employee Turnover (%)", scenario: "A company employs an average of <strong>250 staff</strong> during the year. During this time, <strong>35 employees leave</strong>. Calculate employee turnover.", answer: 14, tolerance: 0.5, unit: "%", hint: "Employee turnover (%) = (Employees leaving ÷ Average employees) × 100.", workings: "(35 ÷ 250) × 100 = 14%." },
+  { name: "Capacity Utilisation (%)", scenario: "A factory can produce a maximum of <strong>8,000 units per week</strong>. It currently produces <strong>6,200 units</strong>. What is its capacity utilisation?", answer: 77.5, tolerance: 0.5, unit: "%", hint: "Capacity utilisation (%) = (Actual output ÷ Maximum possible output) × 100.", workings: "(6,200 ÷ 8,000) × 100 = 77.5%." },
+  { name: "Gearing Ratio (%)", scenario: "A business has <strong>non-current liabilities of £180,000</strong> and <strong>capital employed of £600,000</strong>. Calculate the gearing ratio.", answer: 30, tolerance: 0.5, unit: "%", hint: "Gearing (%) = (Non-current liabilities ÷ Capital employed) × 100.", workings: "(£180,000 ÷ £600,000) × 100 = 30%. This is considered low-geared (under 50%)." },
+];
+
+function renderSolve() {
+  const container = document.getElementById("solveContainer");
+  container.innerHTML = solveProblems.map((p, i) => `
+    <div class="solve-card">
+      <h3>${p.name}</h3>
+      <div class="solve-scenario">${p.scenario}</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.8rem">💡 ${p.hint}</div>
+      <div class="solve-input-row">
+        <input class="solve-input" type="number" step="0.01" placeholder="Enter your answer (${p.unit})" id="solveInput${i}">
+        <button class="check-btn" onclick="checkSolve(${i})">Check ✓</button>
+      </div>
+      <div class="solve-result" id="solveResult${i}"></div>
+    </div>
+  `).join('');
+}
+
+function checkSolve(i) {
+  const p = solveProblems[i];
+  const val = parseFloat(document.getElementById(`solveInput${i}`).value);
+  const res = document.getElementById(`solveResult${i}`);
+  if (isNaN(val)) { res.className = "solve-result show wrong"; res.innerHTML = "Please enter a number."; return; }
+  const diff = Math.abs(val - p.answer);
+  if (diff <= p.tolerance) {
+    totalScore++;
+    document.getElementById("scoreBadge").textContent = `⭐ Score: ${totalScore}`;
+    res.className = "solve-result show correct";
+    res.innerHTML = `✓ Correct! ${p.workings}`;
+  } else {
+    res.className = "solve-result show wrong";
+    res.innerHTML = `✗ Not quite. The answer is <strong>${p.answer} ${p.unit}</strong>. ${p.workings}`;
+  }
+}
+
+renderSolve();
+
+// ========== CHALLENGE ==========
+const challenges = [
+  { badge: "Reverse BEQ", q: "A business breaks even at exactly 4,000 units. The contribution per unit is £12.50. What are the fixed costs?", given: "BEQ = 4,000 units | Contribution per unit = £12.50", answer: 50000, tolerance: 0, unit: "£", hint: "Rearrange: Fixed costs = BEQ × Contribution per unit", workings: "Fixed costs = 4,000 × £12.50 = £50,000. Rearranging BEQ = Fixed costs ÷ Contribution per unit." },
+  { badge: "Reverse Margin of Safety", q: "A firm has a margin of safety of 2,500 units and sells 9,000 units in total. What is the break-even quantity?", given: "Margin of safety = 2,500 units | Sales volume = 9,000 units", answer: 6500, tolerance: 0, unit: "units", hint: "Rearrange: BEQ = Sales volume − Margin of safety", workings: "BEQ = 9,000 − 2,500 = 6,500 units." },
+  { badge: "Reverse GPM", q: "A business has a gross profit margin of 35% and revenue of £460,000. What is its gross profit?", given: "GPM = 35% | Revenue = £460,000", answer: 161000, tolerance: 500, unit: "£", hint: "Rearrange: Gross profit = (GPM ÷ 100) × Revenue", workings: "Gross profit = 35% × £460,000 = £161,000." },
+  { badge: "Reverse ROCE", q: "A company has ROCE of 25% and capital employed of £800,000. What is its operating profit?", given: "ROCE = 25% | Capital employed = £800,000", answer: 200000, tolerance: 0, unit: "£", hint: "Rearrange: Operating profit = (ROCE ÷ 100) × Capital employed", workings: "Operating profit = 25% × £800,000 = £200,000." },
+  { badge: "Reverse Gearing", q: "A business has a gearing ratio of 40% and capital employed of £750,000. What are its non-current liabilities?", given: "Gearing = 40% | Capital employed = £750,000", answer: 300000, tolerance: 0, unit: "£", hint: "Rearrange: Non-current liabilities = (Gearing ÷ 100) × Capital employed", workings: "Non-current liabilities = 40% × £750,000 = £300,000." },
+  { badge: "Reverse Capacity", q: "A factory operates at 80% capacity utilisation and produces 6,400 units. What is its maximum possible output?", given: "Capacity utilisation = 80% | Actual output = 6,400 units", answer: 8000, tolerance: 0, unit: "units", hint: "Rearrange: Max output = Actual output ÷ (Capacity % ÷ 100)", workings: "Max output = 6,400 ÷ 0.80 = 8,000 units." },
+  { badge: "Reverse Trade Rec Days", q: "A business has trade receivable days of 45 and annual revenue of £730,000. What are its trade receivables?", given: "Trade receivable days = 45 | Revenue = £730,000", answer: 90000, tolerance: 500, unit: "£", hint: "Rearrange: Trade receivables = (Trade receivable days × Revenue) ÷ 365", workings: "Trade receivables = (45 × £730,000) ÷ 365 = £90,000." },
+];
+
+function renderChallenge() {
+  const container = document.getElementById("challengeContainer");
+  container.innerHTML = challenges.map((c, i) => `
+    <div class="challenge-card">
+      <div class="challenge-badge">${c.badge}</div>
+      <div class="challenge-q">${c.q}</div>
+      <div class="challenge-given">${c.given.split(' | ').join('<br>')}</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.8rem">🔑 Hint: ${c.hint}</div>
+      <div class="challenge-input-row">
+        <input class="challenge-input" type="number" step="0.01" placeholder="Your answer (${c.unit})" id="challengeInput${i}">
+        <button class="challenge-check" onclick="checkChallenge(${i})">Check ✓</button>
+      </div>
+      <div class="challenge-result" id="challengeResult${i}"></div>
+    </div>
+  `).join('');
+}
+
+function checkChallenge(i) {
+  const c = challenges[i];
+  const val = parseFloat(document.getElementById(`challengeInput${i}`).value);
+  const res = document.getElementById(`challengeResult${i}`);
+  if (isNaN(val)) { res.className = "challenge-result show wrong"; res.innerHTML = "Please enter a number."; return; }
+  const diff = Math.abs(val - c.answer);
+  if (diff <= c.tolerance) {
+    totalScore += 2;
+    document.getElementById("scoreBadge").textContent = `⭐ Score: ${totalScore}`;
+    res.className = "challenge-result show correct";
+    res.innerHTML = `✓ Brilliant! +2 points. ${c.workings}`;
+  } else {
+    res.className = "challenge-result show wrong";
+    res.innerHTML = `✗ Not quite. The answer is <strong>${c.unit === '£' ? '£' : ''}${c.answer.toLocaleString()}${c.unit !== '£' ? ' ' + c.unit : ''}</strong>. ${c.workings}`;
+  }
+}
+
+renderChallenge();
+
+// ========== NAV ==========
+document.querySelectorAll("[data-tab]").forEach(el => {
+  el.addEventListener("click", () => {
+    const tab = el.dataset.tab;
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.querySelector(`.tab-btn[data-tab="${tab}"]`)?.classList.add("active");
+    document.getElementById(`section-${tab}`)?.classList.add("active");
+    window.scrollTo(0, 0);
+  });
+});
+</script>
+</body>
+</html>
